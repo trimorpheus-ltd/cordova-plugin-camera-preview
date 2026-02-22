@@ -267,7 +267,7 @@ public class CameraPreview extends CordovaPlugin implements CameraActivity.Camer
     return true;
   }
 
-  private boolean startCamera(int x, int y, int width, int height, String defaultCamera, Boolean tapToTakePicture, Boolean dragEnabled, final Boolean toBack, String alpha, boolean tapFocus, boolean disableExifHeaderStripping, boolean storeToFile, CallbackContext callbackContext) {
+  private boolean startCamera(int x, int y, int width, int height, String defaultCamera, Boolean tapToTakePicture, Boolean dragEnabled, final Boolean toBack, String alpha, boolean tapFocus, boolean disableExifHeaderStripping, boolean storeToFile, final CallbackContext callbackContext) {
     Log.d(TAG, "start camera action");
 
     if (fragment != null) {
@@ -1193,15 +1193,20 @@ public class CameraPreview extends CordovaPlugin implements CameraActivity.Camer
     return true;
   }
 
+  // Define constants declared in SDK 33.
+  private static final int Build_VERSION_CODES_TIRAMISU = 33;
+  private static final String Manifest_permission_READ_MEDIA_IMAGES = "android.permission.READ_MEDIA_IMAGES";
+  private static final String Manifest_permission_READ_MEDIA_VIDEO = "android.permission.READ_MEDIA_VIDEO";
+
   private String[] getVideoPermissions() {
-    ArrayList<String> permissions = new ArrayList<>();
+    ArrayList<String> permissions = new ArrayList<String>();
 
     permissions.add(Manifest.permission.CAMERA);
     permissions.add(Manifest.permission.RECORD_AUDIO);
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      permissions.add(Manifest.permission.READ_MEDIA_IMAGES);
-      permissions.add(Manifest.permission.READ_MEDIA_VIDEO);
+    if (Build.VERSION.SDK_INT >= Build_VERSION_CODES_TIRAMISU) {
+      permissions.add(Manifest_permission_READ_MEDIA_IMAGES);
+      permissions.add(Manifest_permission_READ_MEDIA_VIDEO);
     } else {
       // Android API 32 or lower
       permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
