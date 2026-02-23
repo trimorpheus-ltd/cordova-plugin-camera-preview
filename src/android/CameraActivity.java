@@ -476,16 +476,21 @@ public class CameraActivity extends Fragment {
             matrix.preScale(1.0f, -1.0f);
           }
 
+          Log.d(TAG, "CameraPreview About to Create ExifInterface");
           ExifInterface exifInterface = new ExifInterface(new ByteArrayInputStream(data));
           int rotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+          Log.d(TAG, "CameraPreview rotation=" + rotation);
           int rotationInDegrees = exifToDegrees(rotation);
+          Log.d(TAG, "CameraPreview rotationInDegrees=" + rotationInDegrees);
 
           if (rotation != 0f) {
+            Log.d(TAG, "CameraPreview preRotate Matrix");
             matrix.preRotate(rotationInDegrees);
           }
 
           // Check if matrix has changed. In that case, apply matrix and override data
           if (!matrix.isIdentity()) {
+            Log.d(TAG, "Matrix isIdentity");
             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
             bitmap = applyMatrix(bitmap, matrix);
 
